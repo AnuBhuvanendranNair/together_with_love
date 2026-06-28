@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>21 Day America Itinerary — August 2026</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: #e8e6e1;
+    }
+
+    /* ── PAGE ── */
+    .page {
+      width: 210mm;
+      background: #ffffff;
+      margin: 24px auto;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.15);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      width: 100%;
+      height: 300px;
+      position: relative;
+      background-image: url('https://images.unsplash.com/photo-1504281490492-090c5c169650?w=1400&q=85&fit=crop');
+      background-size: cover;
+      background-position: center 55%;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(175deg, rgba(10,10,10,0.25) 0%, rgba(10,10,10,0.62) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.5em;
+      color: rgba(255,255,255,0.9);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .hero-divider {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    .hero-rule {
+      width: 55px;
+      height: 1px;
+      background: rgba(255,255,255,0.65);
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 400;
+      font-size: 58px;
+      color: #ffffff;
+      letter-spacing: 0.01em;
+      line-height: 1.05;
+    }
+
+    .hero-dates {
+      margin-top: 14px;
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      font-size: 13px;
+      letter-spacing: 0.25em;
+      color: rgba(255,255,255,0.7);
+      text-transform: uppercase;
+    }
+
+    /* ── CONTENT ── */
+    .content {
+      padding: 60px 68px 50px;
+    }
+
+    /* ── DESTINATION BLOCK ── */
+    .dest {
+      display: flex;
+      gap: 44px;
+      align-items: flex-start;
+      margin-bottom: 54px;
+    }
+
+    .dest-img-wrap {
+      flex-shrink: 0;
+    }
+
+    .dest-img {
+      width: 158px;
+      height: 158px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .dest-content {
+      flex: 1;
+      padding-top: 4px;
+    }
+
+    .dest-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 31px;
+      font-weight: 400;
+      color: #111111;
+      margin-bottom: 18px;
+      line-height: 1.15;
+    }
+
+    .dest-title .dest-label {
+      display: block;
+      font-size: 12px;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: #bbb;
+      margin-bottom: 4px;
+    }
+
+    /* ── SCHEDULE ── */
+    .schedule {
+      border-top: 1px solid #ececec;
+    }
+
+    .schedule-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0;
+      padding: 9px 0;
+      border-bottom: 1px solid #f4f4f4;
+    }
+
+    .time {
+      min-width: 128px;
+      flex-shrink: 0;
+      font-size: 12.5px;
+      color: #c0b8b0;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+    }
+
+    .activity {
+      font-size: 13.5px;
+      color: #1e1e1e;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    .activity strong {
+      font-weight: 700;
+    }
+
+    /* ── WARM NOTE ── */
+    .warm-note {
+      margin-top: 15px;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 12px;
+      color: #c8a898;
+      line-height: 1.8;
+      padding-left: 2px;
+    }
+
+    /* ── SECTION DIVIDER ── */
+    .section-div {
+      border: none;
+      border-top: 1px solid #ebebeb;
+      margin: 0 0 50px;
+    }
+
+    /* ── PAGE BREAK ── */
+    .pg-break {
+      break-before: page;
+      padding-top: 60px;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      border-top: 1px solid #ececec;
+      margin: 10px 68px 0;
+      padding: 28px 0 44px;
+      text-align: center;
+    }
+
+    .footer p {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 12.5px;
+      color: #c0aea4;
+      line-height: 1.9;
+    }
+
+    /* ── CITY BADGE in hero ── */
+    .hero-cities {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 18px;
+    }
+
+    .city-pill {
+      font-family: 'Lato', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      border: 1px solid rgba(255,255,255,0.35);
+      padding: 4px 12px;
+      border-radius: 50px;
+    }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; }
+      .page { margin: 0; box-shadow: none; width: 100%; }
+    }
+
+    @page { size: A4; margin: 0; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ══ HERO ══ -->
+  <div class="hero">
+    <div class="hero-overlay">
+      <p class="hero-eyebrow">21 Day Trip</p>
+      <div class="hero-divider">
+        <div class="hero-rule"></div>
+        <div class="hero-rule"></div>
+      </div>
+      <h1 class="hero-title">America Itinerary</h1>
+      <p class="hero-dates">August 8 – 28 · 2026</p>
+      <div class="hero-cities">
+        <span class="city-pill">Salt Lake City</span>
+        <span class="city-pill">Las Vegas</span>
+        <span class="city-pill">Los Angeles</span>
+        <span class="city-pill">San Francisco</span>
+        <span class="city-pill">Yosemite</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CONTENT ══ -->
+  <div class="content">
+
+    <!-- ── SALT LAKE CITY ── -->
+    <div class="dest">
+      <div class="dest-img-wrap">
+        <img class="dest-img"
+          src="https://images.unsplash.com/photo-1610141369426-bc6044caef17?w=400&h=400&fit=crop&q=80"
+          alt="Salt Lake City" />
+      </div>
+      <div class="dest-content">
+        <h2 class="dest-title">
+          <span class="dest-label">Aug 8 – 14</span>
+          Salt Lake City
+        </h2>
+        <div class="schedule">
+          <div class="schedule-row">
+            <span class="time">Aug 8</span>
+            <span class="activity">Arrive from Berlin — long-haul lands in SLC, check in, rest</span>
+          </div>
+          <div class="schedule-row">
+            <span class="time">Aug 9</span>
+            <span class="activity">Recovery day — slow morning, Liberty Park walk, neighbourhood explore</span>
+          </div>
+          <div class="schedule-row">
+            <span class="time">Aug 10 – 12</span>
+            <span class="activity"><strong>Work from home</strong> — evenings free for local food, Temple Square</span>
+          </div>
+          <div class="schedule-row">
+            <span class="time">Aug 13</span>
+            <span class="activity">Park City day trip — Main Street, Utah Olympic Park, mountain hike</span>
+          </div>
+          <div class="schedule-row">
+            <span class="time">Aug 14 · Evening</span>
+            <span class="activity">Packing day — night out at The Gateway show</span>
+          </div>
+        </div>
+        <p class="warm-note">After weeks apart, you're finally in the same city. Let the jet lag be an excuse to slow down and just be together tonight.</p>
+      </div>
+    </div>
+
+    <!-- ── LAS VEGAS ── -->
+    <div class="dest">
+      <div class="dest-img-wrap">
+        <img class="dest-img"
+          src="https://images.unsplash.com/photo-1581351721010-8cf859cb14a4?w=400&h=400&fit=crop&q=80"
+          alt="Las Vegas" />
+      </div>
+      <div class="dest-content">
+        <h2 class="dest-title">
+          <span class="dest-label">Aug 15 – 16</span>
+          Las Vegas
+        </h2>
+        <div class="schedule">
+          <div class="schedule-row">
+            <span class="time">Aug 15 · 11:40</span>
+            <span class="activity">Fly SLC → LAS — arrive 12:06 PM, check in, pool afternoon</span>
+          </div>
+          <div class="schedule-row">
+            <span class="time">Aug 15 · Evening</span>
+            <span class="activity">Walk the Strip — Bellagio fountains, Venetian, Caesars Palace</span>
+          </div>
+          <div class="schedule-row">
+            <span class="time">Aug 16 · Day</span>
+            <span class="activity">Fremont Street Experience — Neon Museum, Arts District roam</span>
+          </div>
+          <div class="schedule-row">
+            <span class="time">Aug 16 · Evening</span>
+            <span class="activity"><strong>MSG Sphere — Wizard of Oz</strong> · arrive 30 min early</span>
+          </div>
+        </div>
+        <p class="warm-note">Vegas at night is pure theater. When those curved Sphere screens fill your entire field of vision, you're not watching the story — you're inside it.</p>
+      </div>
+    </div>
+
+    <!-- ── LOS ANGELES ── -->
+    <div class="dest">
+      <div class="dest-img-wrap">
+        <img class="dest-img"
+          src="https://images.unsplash.com/photo-1609924211018-5526c55bad5b?w=400&h=400&fit=crop&q=80"
+          alt="Los Angeles" />
+      </div>
+      <div class="dest-content">
+        <h2 class="dest-title">
+          <span class="dest-label">Aug 17 – 19</span>
+          Los Angeles
+        </h2>
+        <div class="schedule">
+          <div class="schedule-row">
+            <span class="time">Aug 17 · 12:53</span>
+            <span class="activity">Fly LAS → LAX — arrive 14:00, check in Hollywood hotel</span>
+          </div>
+          <div class="schedule-row">
+            <span class="time">Aug 17 · 15:00</span>
+            <span class="activity">Walk of Fame — Hollywood Blvd, TCL Chinese Theatre, Dolby Theatre</span>
+          </div>
+          <div class="schedule-row">
+            <span class="time">Aug 18 · 08:00</span>
+            <span class="activity"><strong>Universal Studios Hollywood</strong> — full day until 19:00</span>
+          </div>
+          <div class="schedule-row">
+            <span class="time">Aug 19 · 11:00</span>
+            <span class="activity">Check out — Downtown LA: Grand Central Market, The Broad Museum</span>
+          </div>
+          <div class="schedule-row">
+            <span class="time">Aug 19 · 21:00</span>
+            <span class="activity">Fly LAX → SJC — arrive 22:00, Roshna chechi picks up</span>
+          </div>
+        </div>
+        <p class="warm-note">LA has a dreamlike quality — everything looks slightly too cinematic to be real. Find your favourite star on the Walk of Fame and argue about it.</p>
+      </div>
+    </div>
+
+    <!-- ── BAY AREA ── -->
+    <div class="dest">
+      <div class="dest-img-wrap">
+        <img class="dest-img"
+          src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=400&h=400&fit=crop&q=80"
+          alt="San Francisco" />
+      </div>
+      <div class="dest-content">
+        <h2 class="dest-title">
+          <span class="dest-label">Aug 20 – 23</span>
+          Bay Area
+        </h2>
+        <div class="schedule">
+          <div class="schedule-row">
+            <span class="time">Aug 20</span>
+            <span class="activity">San Francisco — Golden Gate Bridge, Fisherman's Wharf, Mission District</span>
+          </div>
+          <div class="schedule-row">
+            <span class="time">Aug 21 · 06:00</span>
+            <span class="activity"><strong>Yosemite National Park</strong> — El Capitan, Yosemite Falls, Mirror Lake</span>
+          </div>
+          <div class="schedule-row">
+            <span class="time">Aug 22</span>
+            <span class="activity">Flex day — Muir Woods redwoods or rest after Yosemite</span>
+          </div>
+          <div class="schedule-row">
+            <span class="time">Aug 23</span>
+            <span class="activity">Last day with Roshna chechi — farewell dinner, pack up</span>
+          </div>
+        </div>
+        <p class="warm-note">Standing under Half Dome, you realise some things are just too big to rush. Let Yosemite slow you down. Let it be the highlight.</p>
+      </div>
+    </div>
+
+    <!-- ── SLC RETURN ── -->
+    <div class="dest">
+      <div class="dest-img-wrap">
+        <img class="dest-img"
+          src="https://images.unsplash.com/photo-1680707330497-a0c870443267?w=400&h=400&fit=crop&q=80"
+          alt="Salt Lake City Mountains" />
+      </div>
+      <div class="dest-content">
+        <h2 class="dest-title">
+          <span class="dest-label">Aug 24 – 28</span>
+          Back in Salt Lake City
+        </h2>
+        <div class="schedule">
+          <div class="schedule-row">
+            <span class="time">Aug 24</span>
+            <span class="activity">Fly SJC → SLC — return to your wife after 10 days on the road</span>
+          </div>
+          <div class="schedule-row">
+            <span class="time">Aug 25</span>
+            <span class="activity">Antelope Island State Park — bison, Great Salt Lake, sunset</span>
+          </div>
+          <div class="schedule-row">
+            <span class="time">Aug 26</span>
+            <span class="activity">Big Cottonwood Canyon — hike to Lake Blanche or Snowbird tram</span>
+          </div>
+          <div class="schedule-row">
+            <span class="time">Aug 27</span>
+            <span class="activity">Natural History Museum — last evening dinner, somewhere special</span>
+          </div>
+          <div class="schedule-row">
+            <span class="time">Aug 28</span>
+            <span class="activity">Return flight to Berlin — carry 20 days of good memories home</span>
+          </div>
+        </div>
+        <p class="warm-note">These last days are the whole reason you crossed an ocean. No rush. No itinerary. Just her and the mountains.</p>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- ══ FOOTER ══ -->
+  <div class="footer">
+    <p>
+      "Long flights, different time zones, borrowed sunsets —<br />
+      all of it just to end up beside you. Worth every mile."<br />
+      <br />
+      <em>Berlin → Salt Lake City · Las Vegas · Los Angeles · Bay Area · Home — August 2026</em>
+    </p>
+  </div>
+
+</div><!-- /page -->
+</body>
+</html>
