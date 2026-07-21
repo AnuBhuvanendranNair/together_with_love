@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>21 Day America Itinerary — August 2026</title>
+  <title>Together, with love</title>
   <link rel="icon" type="image/png" href="favicon.png" />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&display=swap');
@@ -476,6 +476,9 @@
       z-index: 5;
       cursor: pointer;
       touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      user-select: none;
       transition: left 400ms ease, right 400ms ease;
     }
 
@@ -517,6 +520,9 @@
       transform-origin: 50% 100%;
       backface-visibility: hidden;
       transform-style: preserve-3d;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      user-select: none;
     }
 
     .meet-person.left {
@@ -551,6 +557,9 @@
       filter: drop-shadow(0 8px 3px rgba(85,61,47,0.16));
       image-rendering: pixelated;
       image-rendering: crisp-edges;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      user-select: none;
     }
 
     .meet-sprite.boy {
@@ -1295,23 +1304,24 @@
   const boyCharacter = document.querySelector('[data-character="boy"]');
   const girlCharacter = document.querySelector('[data-character="girl"]');
   const spriteFrames = {
-    idle: [0, 0],
-    blink: [1, 0],
-    yawn: [2, 0],
-    sleep: [3, 0],
-    working: [0, 1],
-    evening: [1, 1],
-    love: [2, 1],
-    hugReady: [3, 1]
+    idle: ['main', 0, 0],
+    blink: ['main', 1, 0],
+    yawn: ['main', 2, 0],
+    sleep: ['main', 3, 0],
+    working: ['main', 0, 1],
+    evening: ['main', 1, 1],
+    love: ['main', 2, 1],
+    hugReady: ['main', 3, 1],
   };
 
   function setCharacterFrame(character, state) {
     const sprite = character.querySelector('[data-sprite]');
-    const [column, row] = spriteFrames[state] || spriteFrames.idle;
+    const [, column, row] = spriteFrames[state] || spriteFrames.idle;
 
     if (!sprite) return;
 
     character.dataset.state = state;
+    sprite.classList.toggle('boy', character.dataset.character === 'boy');
     sprite.style.setProperty('--sprite-x', `${column * 33.3333}%`);
     sprite.style.setProperty('--sprite-y', `${row * 100}%`);
   }
