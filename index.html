@@ -474,6 +474,8 @@
       width: 74px;
       height: 112px;
       z-index: 5;
+      cursor: pointer;
+      touch-action: manipulation;
       transition: left 400ms ease, right 400ms ease;
     }
 
@@ -512,6 +514,9 @@
       display: block;
       width: 100%;
       height: 100%;
+      transform-origin: 50% 100%;
+      backface-visibility: hidden;
+      transform-style: preserve-3d;
     }
 
     .meet-person.left {
@@ -534,60 +539,26 @@
       filter: drop-shadow(0 8px 3px rgba(85,61,47,0.16));
     }
 
-    .meet-frame-blink {
-      opacity: 0;
-    }
-
-    .meet-frame-love {
-      opacity: 0;
-    }
-
-    .meet-frame-sleep {
-      left: 0;
-      top: auto;
-      bottom: 0;
+    .meet-sprite {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
-      opacity: 0;
-      object-fit: contain;
+      display: block;
+      background-repeat: no-repeat;
+      background-size: 400% 200%;
+      background-position: var(--sprite-x, 0%) var(--sprite-y, 0%);
+      filter: drop-shadow(0 8px 3px rgba(85,61,47,0.16));
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
     }
 
-    .meet-person.is-sleeping {
-      bottom: 38px;
-      width: 150px;
-      height: 118px;
+    .meet-sprite.boy {
+      background-image: url('assets/images/boy-sprite.png');
     }
 
-    .meet-person.is-blinking .meet-frame-blink {
-      opacity: 1;
-    }
-
-    .meet-person.is-blinking .meet-frame-idle {
-      opacity: 0;
-    }
-
-    .meet-person.is-sleeping .meet-frame-idle,
-    .meet-person.is-sleeping .meet-frame-blink,
-    .meet-person.is-sleeping .meet-frame-love {
-      opacity: 0;
-    }
-
-    .meet-person.is-sleeping .meet-frame-sleep {
-      opacity: 1;
-    }
-
-    .meet-person.is-loving .meet-frame-idle,
-    .meet-person.is-loving .meet-frame-blink,
-    .meet-person.is-loving .meet-frame-sleep {
-      opacity: 0;
-    }
-
-    .meet-person.is-loving .meet-frame-love {
-      opacity: 1;
-    }
-
-    .meet-person.is-sleeping.is-loving .meet-frame-love {
-      opacity: 0;
+    .meet-sprite.girl {
+      background-image: url('assets/images/girl-sprite.png');
     }
 
     .meet-progress-text {
@@ -671,11 +642,6 @@
       .meet-person {
         width: 64px;
         height: 98px;
-      }
-
-      .meet-person.is-sleeping {
-        width: 132px;
-        height: 104px;
       }
 
       .meet-couple {
@@ -797,11 +763,6 @@
         height: 82px;
       }
 
-      .meet-person.is-sleeping {
-        width: 112px;
-        height: 88px;
-      }
-
       .meet-couple {
         width: 66px;
         height: 92px;
@@ -919,11 +880,6 @@
       .meet-person {
         width: 46px;
         height: 74px;
-      }
-
-      .meet-person.is-sleeping {
-        width: 96px;
-        height: 76px;
       }
 
       .meet-couple {
@@ -1047,18 +1003,12 @@
 
         <span class="meet-person left" data-character="boy" data-zone="Europe/Berlin" aria-hidden="true">
           <span class="meet-character-art">
-            <img class="meet-frame-idle" src="assets/images/meet-boy.png" alt="" />
-            <img class="meet-frame-blink" src="assets/images/meet-boy-blink.png" alt="" />
-            <img class="meet-frame-sleep" src="assets/images/sleep-boy.png" alt="" />
-            <img class="meet-frame-love" src="assets/images/love-boy.png" alt="" />
+            <span class="meet-sprite boy" data-sprite></span>
           </span>
         </span>
         <span class="meet-person right" data-character="girl" data-zone="America/Denver" aria-hidden="true">
           <span class="meet-character-art">
-            <img class="meet-frame-idle" src="assets/images/meet-girl.png" alt="" />
-            <img class="meet-frame-blink" src="assets/images/meet-girl-blink.png" alt="" />
-            <img class="meet-frame-sleep" src="assets/images/sleep-girl.png" alt="" />
-            <img class="meet-frame-love" src="assets/images/love-girl.png" alt="" />
+            <span class="meet-sprite girl" data-sprite></span>
           </span>
         </span>
         <span class="meet-couple" aria-hidden="true">
@@ -1344,6 +1294,27 @@
   const meetCharacters = document.querySelectorAll('.meet-person');
   const boyCharacter = document.querySelector('[data-character="boy"]');
   const girlCharacter = document.querySelector('[data-character="girl"]');
+  const spriteFrames = {
+    idle: [0, 0],
+    blink: [1, 0],
+    yawn: [2, 0],
+    sleep: [3, 0],
+    working: [0, 1],
+    evening: [1, 1],
+    love: [2, 1],
+    hugReady: [3, 1]
+  };
+
+  function setCharacterFrame(character, state) {
+    const sprite = character.querySelector('[data-sprite]');
+    const [column, row] = spriteFrames[state] || spriteFrames.idle;
+
+    if (!sprite) return;
+
+    character.dataset.state = state;
+    sprite.style.setProperty('--sprite-x', `${column * 33.3333}%`);
+    sprite.style.setProperty('--sprite-y', `${row * 100}%`);
+  }
 
   function getLocalTime(timeZone) {
     const parts = new Intl.DateTimeFormat('en-US', {
@@ -1361,8 +1332,10 @@
   }
 
   function isCharacterSleeping(character) {
+    const stateOverride = pageParams.get(`${character.dataset.character}State`);
     const sleepOverride = pageParams.get(`${character.dataset.character}Sleep`);
 
+    if (stateOverride) return stateOverride === 'sleep';
     if (sleepOverride === '1') return true;
     if (sleepOverride === '0') return false;
 
@@ -1372,14 +1345,32 @@
     return minutes < wakeMinutes || minutes >= 23 * 60;
   }
 
+  function awakeStateForCharacter(character) {
+    const stateOverride = pageParams.get(`${character.dataset.character}State`);
+
+    if (stateOverride && stateOverride !== 'sleep') {
+      return stateOverride;
+    }
+
+    return 'idle';
+  }
+
   function updateCharacterSleepStates() {
     meetCharacters.forEach((character) => {
       const sleeping = isCharacterSleeping(character);
       character.classList.toggle('is-sleeping', sleeping);
 
       if (sleeping) {
+        window.clearTimeout(Number(character.dataset.actionTimeout));
+        window.clearTimeout(Number(character.dataset.specialTimeout));
+        delete character.dataset.actionTimeout;
+        delete character.dataset.specialTimeout;
         character.classList.remove('is-blinking');
         character.classList.remove('is-loving');
+        character.classList.remove('is-acting');
+        setCharacterFrame(character, 'sleep');
+      } else if (!character.classList.contains('is-loving') && !character.classList.contains('is-acting')) {
+        setCharacterFrame(character, awakeStateForCharacter(character));
       }
     });
   }
@@ -1396,8 +1387,48 @@
 
       if (active) {
         character.classList.remove('is-blinking');
+        setCharacterFrame(character, 'love');
+      } else if (character.classList.contains('is-sleeping')) {
+        setCharacterFrame(character, 'sleep');
+      } else {
+        setCharacterFrame(character, awakeStateForCharacter(character));
       }
     });
+  }
+
+  function setSpecialState(active, initiator) {
+    const responder = initiator === boyCharacter ? girlCharacter : boyCharacter;
+    const initiatorState = Math.random() < 0.5 ? 'love' : 'hugReady';
+    const responderState = initiatorState === 'love'
+      ? (Math.random() < 0.5 ? 'love' : 'hugReady')
+      : (Math.random() < 0.5 ? 'hugReady' : 'love');
+
+    if (!initiator || !responder) return;
+
+    [initiator, responder].forEach((character) => {
+      window.clearTimeout(Number(character.dataset.actionTimeout));
+      character.classList.remove('is-acting');
+      character.classList.remove('is-blinking');
+      character.classList.toggle('is-loving', active);
+      delete character.dataset.actionTimeout;
+
+      if (!active) {
+        delete character.dataset.specialTimeout;
+      }
+    });
+
+    if (active) {
+      setCharacterFrame(initiator, initiatorState);
+      setCharacterFrame(responder, responderState);
+    } else {
+      [initiator, responder].forEach((character) => {
+        if (character.classList.contains('is-sleeping')) {
+          setCharacterFrame(character, 'sleep');
+        } else {
+          setCharacterFrame(character, awakeStateForCharacter(character));
+        }
+      });
+    }
   }
 
   if (pageParams.get('love') === '1') {
@@ -1411,16 +1442,122 @@
   updateCharacterSleepStates();
   setInterval(updateCharacterSleepStates, 60000);
 
+  const clickActions = ['working', 'evening', 'yawn'];
+
+  function pickClickAction(character) {
+    const lastAction = character.dataset.lastAction;
+    const availableActions = clickActions.filter((action) => action !== lastAction);
+    return availableActions[Math.floor(Math.random() * availableActions.length)];
+  }
+
+  function runClickAction(character) {
+    if (
+      character.classList.contains('is-sleeping') ||
+      character.classList.contains('is-loving') ||
+      meetWidget?.classList.contains('is-met')
+    ) {
+      return;
+    }
+
+    if (character.classList.contains('is-acting')) {
+      window.clearTimeout(Number(character.dataset.actionTimeout));
+      character.classList.remove('is-acting');
+      delete character.dataset.actionTimeout;
+      setCharacterFrame(character, awakeStateForCharacter(character));
+      return;
+    }
+
+    const action = pickClickAction(character);
+    const duration = action === 'yawn'
+      ? 650
+      : 5000 + Math.random() * 2000;
+
+    character.dataset.lastAction = action;
+    character.classList.add('is-acting');
+    character.classList.remove('is-blinking');
+    setCharacterFrame(character, action);
+
+    const actionTimeout = window.setTimeout(() => {
+      character.classList.remove('is-acting');
+      delete character.dataset.actionTimeout;
+
+      if (character.classList.contains('is-sleeping')) {
+        setCharacterFrame(character, 'sleep');
+      } else if (!character.classList.contains('is-loving')) {
+        setCharacterFrame(character, awakeStateForCharacter(character));
+      }
+    }, duration);
+
+    character.dataset.actionTimeout = String(actionTimeout);
+  }
+
+  function runSpecialAction(character) {
+    if (
+      character.classList.contains('is-sleeping') ||
+      character.classList.contains('is-loving') ||
+      character.classList.contains('is-acting') ||
+      meetWidget?.classList.contains('is-met') ||
+      !bothCharactersAwake() ||
+      Array.from(meetCharacters).some((meetCharacter) => (
+        meetCharacter.classList.contains('is-loving') ||
+        meetCharacter.classList.contains('is-acting')
+      ))
+    ) {
+      return;
+    }
+
+    const duration = 5000 + Math.random() * 2000;
+    setSpecialState(true, character);
+
+    const specialTimeout = window.setTimeout(() => {
+      setSpecialState(false, character);
+    }, duration);
+
+    meetCharacters.forEach((meetCharacter) => {
+      meetCharacter.dataset.specialTimeout = String(specialTimeout);
+    });
+  }
+
+  meetCharacters.forEach((character) => {
+    character.addEventListener('pointerup', () => {
+      const tapTimeout = Number(character.dataset.tapTimeout);
+
+      if (tapTimeout) {
+        window.clearTimeout(tapTimeout);
+        delete character.dataset.tapTimeout;
+        runSpecialAction(character);
+        return;
+      }
+
+      character.dataset.tapTimeout = String(window.setTimeout(() => {
+        delete character.dataset.tapTimeout;
+        runClickAction(character);
+      }, 260));
+    });
+  });
+
   if (!reducedMotion.matches) {
     meetCharacters.forEach((character, index) => {
       function scheduleBlink() {
         const delay = 2600 + Math.random() * 3600 + index * 650;
         window.setTimeout(() => {
-          if (!character.classList.contains('is-sleeping') && !character.classList.contains('is-loving')) {
+          if (
+            !character.classList.contains('is-sleeping') &&
+            !character.classList.contains('is-loving') &&
+            !character.classList.contains('is-acting')
+          ) {
             character.classList.add('is-blinking');
+            setCharacterFrame(character, 'blink');
           }
           window.setTimeout(() => {
             character.classList.remove('is-blinking');
+            if (
+              !character.classList.contains('is-sleeping') &&
+              !character.classList.contains('is-loving') &&
+              !character.classList.contains('is-acting')
+            ) {
+              setCharacterFrame(character, awakeStateForCharacter(character));
+            }
             scheduleBlink();
           }, 140);
         }, delay);
