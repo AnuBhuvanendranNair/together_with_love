@@ -13,11 +13,13 @@
     body {
       font-family: 'Lato', sans-serif;
       background: #e8e6e1;
+      color: #1e1e1e;
+      overflow-x: hidden;
     }
 
     /* ── PAGE ── */
     .page {
-      width: 210mm;
+      width: min(100% - 32px, 210mm);
       background: #ffffff;
       margin: 24px auto;
       box-shadow: 0 4px 40px rgba(0,0,0,0.15);
@@ -28,20 +30,32 @@
       width: 100%;
       height: 300px;
       position: relative;
+      overflow: hidden;
       background-image: url('https://images.unsplash.com/photo-1504281490492-090c5c169650?w=1400&q=85&fit=crop');
       background-size: cover;
       background-position: center 55%;
     }
 
+    .heart-snow {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
     .hero-overlay {
       position: absolute;
       inset: 0;
+      z-index: 2;
       background: linear-gradient(175deg, rgba(10,10,10,0.25) 0%, rgba(10,10,10,0.62) 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
+      padding: 34px 24px;
     }
 
     .hero-eyebrow {
@@ -93,10 +107,35 @@
 
     /* ── DESTINATION BLOCK ── */
     .dest {
-      display: flex;
+      margin-bottom: 34px;
+      padding: 28px 30px;
+      border: 1px solid #eee6dd;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #fbf8f2 0%, #f6efe7 100%);
+      box-shadow: 0 18px 36px rgba(70,50,36,0.16);
+    }
+
+    .dest:last-child {
+      margin-bottom: 0;
+    }
+
+    .dest-summary {
+      display: grid;
+      grid-template-columns: 158px minmax(0, 1fr) auto;
       gap: 44px;
-      align-items: flex-start;
-      margin-bottom: 54px;
+      align-items: center;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .dest-summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .dest-summary:focus-visible {
+      outline: 2px solid #d8b9a9;
+      outline-offset: 8px;
+      border-radius: 6px;
     }
 
     .dest-img-wrap {
@@ -113,7 +152,13 @@
 
     .dest-content {
       flex: 1;
+      min-width: 0;
       padding-top: 4px;
+    }
+
+    .dest-panel {
+      margin-left: 202px;
+      padding-top: 22px;
     }
 
     .dest-title {
@@ -121,7 +166,7 @@
       font-size: 31px;
       font-weight: 400;
       color: #111111;
-      margin-bottom: 18px;
+      margin-bottom: 0;
       line-height: 1.15;
     }
 
@@ -136,9 +181,43 @@
       margin-bottom: 4px;
     }
 
+    .dest-chevron {
+      width: 34px;
+      height: 34px;
+      border: 1px solid #e5d9cf;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f4f0ea;
+      box-shadow: 0 2px 8px rgba(72,52,37,0.12);
+      transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .dest-chevron::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-right: 1.5px solid #8d7868;
+      border-bottom: 1.5px solid #8d7868;
+      transform: translateY(-2px) rotate(45deg);
+      transition: border-color 180ms ease, transform 180ms ease;
+    }
+
+    .dest[open] .dest-chevron {
+      background: #b89c8e;
+      border-color: #b89c8e;
+      box-shadow: none;
+    }
+
+    .dest[open] .dest-chevron::before {
+      border-color: #ffffff;
+      transform: translateY(2px) rotate(225deg);
+    }
+
     /* ── SCHEDULE ── */
     .schedule {
-      border-top: 1px solid #ececec;
+      border-top: 1px solid rgba(112,96,83,0.22);
     }
 
     .schedule-row {
@@ -146,7 +225,7 @@
       align-items: baseline;
       gap: 0;
       padding: 9px 0;
-      border-bottom: 1px solid #f4f4f4;
+      border-bottom: 1px solid rgba(112,96,83,0.16);
     }
 
     .time {
@@ -171,7 +250,7 @@
 
     /* ── WARM NOTE ── */
     .warm-note {
-      margin-top: 15px;
+      margin-top: 12px;
       font-family: 'Playfair Display', serif;
       font-style: italic;
       font-size: 12px;
@@ -216,6 +295,7 @@
       flex-wrap: wrap;
       justify-content: center;
       margin-top: 18px;
+      max-width: 640px;
     }
 
     .city-pill {
@@ -228,6 +308,373 @@
       border: 1px solid rgba(255,255,255,0.35);
       padding: 4px 12px;
       border-radius: 50px;
+    }
+
+    /* ── COUNTDOWN ── */
+    .countdown {
+      padding: 32px 68px 10px;
+      background: #fbfaf6;
+      text-align: center;
+    }
+
+    .countdown-inner {
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    .countdown-kicker,
+    .countdown-date {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 13px;
+      color: #211b16;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+      align-items: start;
+      gap: 7px;
+      margin: 8px auto 6px;
+    }
+
+    .countdown-unit {
+      min-width: 0;
+    }
+
+    .countdown-value {
+      display: grid;
+      place-items: center;
+      height: 54px;
+      border-radius: 8px;
+      background: linear-gradient(180deg, #e9dece 0%, #ddd1bf 100%);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 10px 18px rgba(78,61,44,0.09);
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      line-height: 1;
+      color: #2e241c;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .countdown-label {
+      display: block;
+      margin-top: 8px;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.32em;
+      color: #312820;
+      text-transform: uppercase;
+    }
+
+    .countdown-separator {
+      padding-top: 8px;
+      font-family: 'Playfair Display', serif;
+      font-size: 34px;
+      line-height: 1;
+      color: #2e241c;
+    }
+
+    .countdown-date {
+      text-align: right;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 760px) {
+      body {
+        background: #ffffff;
+      }
+
+      .page {
+        width: 100%;
+        margin: 0;
+        box-shadow: none;
+      }
+
+      .hero {
+        min-height: 360px;
+        height: 58vh;
+        max-height: 500px;
+      }
+
+      .hero-title {
+        font-size: clamp(38px, 12vw, 58px);
+      }
+
+      .hero-eyebrow {
+        font-size: 11px;
+        letter-spacing: 0.35em;
+      }
+
+      .hero-dates {
+        font-size: 12px;
+        letter-spacing: 0.18em;
+      }
+
+      .hero-rule {
+        width: 42px;
+      }
+
+      .city-pill {
+        font-size: 9.5px;
+        letter-spacing: 0.14em;
+        padding: 5px 10px;
+      }
+
+      .content {
+        padding: 42px 24px 36px;
+      }
+
+      .countdown {
+        padding: 30px 24px 8px;
+      }
+
+      .countdown-grid {
+        gap: 6px;
+      }
+
+      .countdown-value {
+        height: 48px;
+        font-size: 30px;
+      }
+
+      .countdown-separator {
+        font-size: 28px;
+      }
+
+      .dest {
+        margin-bottom: 46px;
+        padding: 24px;
+        box-shadow: 0 14px 28px rgba(70,50,36,0.13);
+      }
+
+      .dest-summary {
+        grid-template-columns: 112px minmax(0, 1fr) auto;
+        gap: 22px;
+      }
+
+      .dest-panel {
+        margin-left: 134px;
+      }
+
+      .dest-img {
+        width: 112px;
+        height: 112px;
+      }
+
+      .dest-title {
+        font-size: 28px;
+      }
+
+      .schedule-row {
+        gap: 18px;
+      }
+
+      .time {
+        min-width: 108px;
+      }
+
+      .footer {
+        margin: 4px 24px 0;
+        padding-bottom: 36px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .hero {
+        min-height: 390px;
+        height: auto;
+      }
+
+      .hero-overlay {
+        position: relative;
+        min-height: 390px;
+      }
+
+      .hero-title {
+        max-width: 9ch;
+      }
+
+      .hero-cities {
+        gap: 8px;
+      }
+
+      .content {
+        padding: 38px 20px 28px;
+      }
+
+      .countdown {
+        padding: 26px 20px 6px;
+      }
+
+      .countdown-kicker {
+        font-size: 11px;
+        letter-spacing: 0.08em;
+      }
+
+      .countdown-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 7px;
+        margin-top: 10px;
+      }
+
+      .countdown-separator {
+        display: none;
+      }
+
+      .countdown-value {
+        height: 46px;
+        border-radius: 7px;
+        font-size: 26px;
+      }
+
+      .countdown-label {
+        font-size: 8px;
+        letter-spacing: 0.18em;
+      }
+
+      .countdown-date {
+        margin-top: 10px;
+        text-align: center;
+        font-size: 11px;
+      }
+
+      .dest {
+        margin-bottom: 24px;
+        padding: 20px;
+      }
+
+      .dest-summary {
+        grid-template-columns: 96px minmax(0, 1fr) auto;
+        gap: 16px;
+        align-items: start;
+      }
+
+      .dest-img-wrap {
+        padding-top: 2px;
+      }
+
+      .dest-img {
+        width: 96px;
+        height: 96px;
+      }
+
+      .dest-panel {
+        margin-left: 0;
+        padding-top: 20px;
+      }
+
+      .dest-chevron {
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+      }
+
+      .dest-title {
+        font-size: 26px;
+        margin-bottom: 14px;
+      }
+
+      .dest-title .dest-label {
+        font-size: 11px;
+        letter-spacing: 0.28em;
+      }
+
+      .schedule-row {
+        display: block;
+        padding: 12px 0;
+      }
+
+      .time {
+        display: block;
+        min-width: 0;
+        margin-bottom: 3px;
+      }
+
+      .activity {
+        display: block;
+        font-size: 14px;
+      }
+
+      .warm-note {
+        font-size: 13px;
+      }
+
+      .footer {
+        margin-inline: 20px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .hero-overlay {
+        padding-inline: 18px;
+      }
+
+      .hero-title {
+        font-size: 34px;
+      }
+
+      .content {
+        padding-inline: 16px;
+      }
+
+      .countdown {
+        padding-inline: 16px;
+      }
+
+      .countdown-value {
+        height: 42px;
+        font-size: 23px;
+      }
+
+      .countdown-label {
+        letter-spacing: 0.12em;
+      }
+
+      .dest {
+        padding: 16px;
+      }
+
+      .dest-summary {
+        grid-template-columns: 78px minmax(0, 1fr) 28px;
+        gap: 12px;
+      }
+
+      .dest-img {
+        width: 78px;
+        height: 78px;
+      }
+
+      .dest-chevron {
+        width: 28px;
+        height: 28px;
+      }
+
+      .dest-title {
+        font-size: 23px;
+      }
+
+      .warm-note {
+        font-size: 12px;
+        line-height: 1.65;
+      }
+
+      .footer {
+        margin-inline: 16px;
+      }
+    }
+
+    @media (max-width: 340px) {
+      .dest-summary {
+        grid-template-columns: 1fr 28px;
+      }
+
+      .dest-img-wrap {
+        display: none;
+      }
     }
 
     /* ── PRINT ── */
@@ -244,6 +691,7 @@
 
   <!-- ══ HERO ══ -->
   <div class="hero">
+    <canvas class="heart-snow" aria-hidden="true"></canvas>
     <div class="hero-overlay">
       <p class="hero-eyebrow">21 Day Trip</p>
       <div class="hero-divider">
@@ -262,21 +710,55 @@
     </div>
   </div>
 
+  <!-- ══ COUNTDOWN ══ -->
+  <section class="countdown" aria-labelledby="countdown-title">
+    <div class="countdown-inner">
+      <p class="countdown-kicker" id="countdown-title">Until we are together again in....</p>
+      <div class="countdown-grid" role="timer" aria-live="polite" aria-label="Countdown to August 8, 2026 at 2:00 PM Salt Lake City time">
+        <div class="countdown-unit">
+          <span class="countdown-value" data-countdown-value="days">000</span>
+          <span class="countdown-label">Days</span>
+        </div>
+        <span class="countdown-separator" aria-hidden="true">:</span>
+        <div class="countdown-unit">
+          <span class="countdown-value" data-countdown-value="hours">00</span>
+          <span class="countdown-label">Hours</span>
+        </div>
+        <span class="countdown-separator" aria-hidden="true">:</span>
+        <div class="countdown-unit">
+          <span class="countdown-value" data-countdown-value="minutes">00</span>
+          <span class="countdown-label">Minutes</span>
+        </div>
+        <span class="countdown-separator" aria-hidden="true">:</span>
+        <div class="countdown-unit">
+          <span class="countdown-value" data-countdown-value="seconds">00</span>
+          <span class="countdown-label">Seconds</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ══ CONTENT ══ -->
   <div class="content">
 
     <!-- ── SALT LAKE CITY ── -->
-    <div class="dest">
-      <div class="dest-img-wrap">
-        <img class="dest-img"
-          src="https://images.unsplash.com/photo-1610141369426-bc6044caef17?w=400&h=400&fit=crop&q=80"
-          alt="Salt Lake City" />
-      </div>
-      <div class="dest-content">
-        <h2 class="dest-title">
-          <span class="dest-label">Aug 8 – 14</span>
-          Salt Lake City
-        </h2>
+    <details class="dest" open>
+      <summary class="dest-summary">
+        <div class="dest-img-wrap">
+          <img class="dest-img"
+            src="https://images.unsplash.com/photo-1610141369426-bc6044caef17?w=400&h=400&fit=crop&q=80"
+            alt="Salt Lake City" />
+        </div>
+        <div class="dest-content">
+          <h2 class="dest-title">
+            <span class="dest-label">Aug 8 – 14</span>
+            Salt Lake City
+          </h2>
+          <p class="warm-note">After weeks apart, you're finally in the same city. Let the jet lag be an excuse to slow down and just be together tonight.</p>
+        </div>
+        <span class="dest-chevron" aria-hidden="true"></span>
+      </summary>
+      <div class="dest-panel">
         <div class="schedule">
           <div class="schedule-row">
             <span class="time">Aug 8</span>
@@ -299,22 +781,27 @@
             <span class="activity">Packing day — night out at The Gateway show</span>
           </div>
         </div>
-        <p class="warm-note">After weeks apart, you're finally in the same city. Let the jet lag be an excuse to slow down and just be together tonight.</p>
       </div>
-    </div>
+    </details>
 
     <!-- ── LAS VEGAS ── -->
-    <div class="dest">
-      <div class="dest-img-wrap">
-        <img class="dest-img"
-          src="https://images.unsplash.com/photo-1581351721010-8cf859cb14a4?w=400&h=400&fit=crop&q=80"
-          alt="Las Vegas" />
-      </div>
-      <div class="dest-content">
-        <h2 class="dest-title">
-          <span class="dest-label">Aug 15 – 16</span>
-          Las Vegas
-        </h2>
+    <details class="dest">
+      <summary class="dest-summary">
+        <div class="dest-img-wrap">
+          <img class="dest-img"
+            src="https://images.unsplash.com/photo-1581351721010-8cf859cb14a4?w=400&h=400&fit=crop&q=80"
+            alt="Las Vegas" />
+        </div>
+        <div class="dest-content">
+          <h2 class="dest-title">
+            <span class="dest-label">Aug 15 – 16</span>
+            Las Vegas
+          </h2>
+          <p class="warm-note">Vegas at night is pure theater. When those curved Sphere screens fill your entire field of vision, you're not watching the story — you're inside it.</p>
+        </div>
+        <span class="dest-chevron" aria-hidden="true"></span>
+      </summary>
+      <div class="dest-panel">
         <div class="schedule">
           <div class="schedule-row">
             <span class="time">Aug 15 · 11:40</span>
@@ -333,22 +820,27 @@
             <span class="activity"><strong>MSG Sphere — Wizard of Oz</strong> · arrive 30 min early</span>
           </div>
         </div>
-        <p class="warm-note">Vegas at night is pure theater. When those curved Sphere screens fill your entire field of vision, you're not watching the story — you're inside it.</p>
       </div>
-    </div>
+    </details>
 
     <!-- ── LOS ANGELES ── -->
-    <div class="dest">
-      <div class="dest-img-wrap">
-        <img class="dest-img"
-          src="https://images.unsplash.com/photo-1609924211018-5526c55bad5b?w=400&h=400&fit=crop&q=80"
-          alt="Los Angeles" />
-      </div>
-      <div class="dest-content">
-        <h2 class="dest-title">
-          <span class="dest-label">Aug 17 – 19</span>
-          Los Angeles
-        </h2>
+    <details class="dest">
+      <summary class="dest-summary">
+        <div class="dest-img-wrap">
+          <img class="dest-img"
+            src="https://images.unsplash.com/photo-1609924211018-5526c55bad5b?w=400&h=400&fit=crop&q=80"
+            alt="Los Angeles" />
+        </div>
+        <div class="dest-content">
+          <h2 class="dest-title">
+            <span class="dest-label">Aug 17 – 19</span>
+            Los Angeles
+          </h2>
+          <p class="warm-note">LA has a dreamlike quality — everything looks slightly too cinematic to be real. Find your favourite star on the Walk of Fame and argue about it.</p>
+        </div>
+        <span class="dest-chevron" aria-hidden="true"></span>
+      </summary>
+      <div class="dest-panel">
         <div class="schedule">
           <div class="schedule-row">
             <span class="time">Aug 17 · 12:53</span>
@@ -371,22 +863,27 @@
             <span class="activity">Fly LAX → SJC — arrive 22:00, Roshna chechi picks up</span>
           </div>
         </div>
-        <p class="warm-note">LA has a dreamlike quality — everything looks slightly too cinematic to be real. Find your favourite star on the Walk of Fame and argue about it.</p>
       </div>
-    </div>
+    </details>
 
     <!-- ── BAY AREA ── -->
-    <div class="dest">
-      <div class="dest-img-wrap">
-        <img class="dest-img"
-          src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=400&h=400&fit=crop&q=80"
-          alt="San Francisco" />
-      </div>
-      <div class="dest-content">
-        <h2 class="dest-title">
-          <span class="dest-label">Aug 20 – 23</span>
-          Bay Area
-        </h2>
+    <details class="dest">
+      <summary class="dest-summary">
+        <div class="dest-img-wrap">
+          <img class="dest-img"
+            src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=400&h=400&fit=crop&q=80"
+            alt="San Francisco" />
+        </div>
+        <div class="dest-content">
+          <h2 class="dest-title">
+            <span class="dest-label">Aug 20 – 23</span>
+            Bay Area
+          </h2>
+          <p class="warm-note">Standing under Half Dome, you realise some things are just too big to rush. Let Yosemite slow you down. Let it be the highlight.</p>
+        </div>
+        <span class="dest-chevron" aria-hidden="true"></span>
+      </summary>
+      <div class="dest-panel">
         <div class="schedule">
           <div class="schedule-row">
             <span class="time">Aug 20</span>
@@ -405,22 +902,27 @@
             <span class="activity">Last day with Roshna chechi — farewell dinner, pack up</span>
           </div>
         </div>
-        <p class="warm-note">Standing under Half Dome, you realise some things are just too big to rush. Let Yosemite slow you down. Let it be the highlight.</p>
       </div>
-    </div>
+    </details>
 
     <!-- ── SLC RETURN ── -->
-    <div class="dest">
-      <div class="dest-img-wrap">
-        <img class="dest-img"
-          src="https://images.unsplash.com/photo-1680707330497-a0c870443267?w=400&h=400&fit=crop&q=80"
-          alt="Salt Lake City Mountains" />
-      </div>
-      <div class="dest-content">
-        <h2 class="dest-title">
-          <span class="dest-label">Aug 24 – 28</span>
-          Back in Salt Lake City
-        </h2>
+    <details class="dest">
+      <summary class="dest-summary">
+        <div class="dest-img-wrap">
+          <img class="dest-img"
+            src="https://images.unsplash.com/photo-1680707330497-a0c870443267?w=400&h=400&fit=crop&q=80"
+            alt="Salt Lake City Mountains" />
+        </div>
+        <div class="dest-content">
+          <h2 class="dest-title">
+            <span class="dest-label">Aug 24 – 28</span>
+            Back in Salt Lake City
+          </h2>
+          <p class="warm-note">These last days are the whole reason you crossed an ocean. No rush. No itinerary. Just her and the mountains.</p>
+        </div>
+        <span class="dest-chevron" aria-hidden="true"></span>
+      </summary>
+      <div class="dest-panel">
         <div class="schedule">
           <div class="schedule-row">
             <span class="time">Aug 24</span>
@@ -443,9 +945,8 @@
             <span class="activity">Return flight to Berlin — carry 20 days of good memories home</span>
           </div>
         </div>
-        <p class="warm-note">These last days are the whole reason you crossed an ocean. No rush. No itinerary. Just her and the mountains.</p>
       </div>
-    </div>
+    </details>
 
   </div><!-- /content -->
 
@@ -460,5 +961,119 @@
   </div>
 
 </div><!-- /page -->
+<script>
+  const countdownTarget = new Date('2026-08-08T14:00:00-06:00').getTime();
+  const countdownValues = {
+    days: document.querySelector('[data-countdown-value="days"]'),
+    hours: document.querySelector('[data-countdown-value="hours"]'),
+    minutes: document.querySelector('[data-countdown-value="minutes"]'),
+    seconds: document.querySelector('[data-countdown-value="seconds"]')
+  };
+
+  function updateCountdown() {
+    const remaining = Math.max(0, countdownTarget - Date.now());
+    const totalSeconds = Math.floor(remaining / 1000);
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    countdownValues.days.textContent = String(days);
+    countdownValues.hours.textContent = String(hours).padStart(2, '0');
+    countdownValues.minutes.textContent = String(minutes).padStart(2, '0');
+    countdownValues.seconds.textContent = String(seconds).padStart(2, '0');
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  const heartCanvas = document.querySelector('.heart-snow');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  if (heartCanvas && !reducedMotion.matches) {
+    const heartContext = heartCanvas.getContext('2d');
+    const heartPixels = [
+      [0,1], [1,0], [2,0], [3,1], [4,0], [5,0], [6,1],
+      [0,2], [1,2], [2,2], [3,2], [4,2], [5,2], [6,2],
+      [1,3], [2,3], [3,3], [4,3], [5,3],
+      [2,4], [3,4], [4,4],
+      [3,5]
+    ];
+    const heartColors = [
+      'rgba(255, 214, 224, 0.88)',
+      'rgba(255, 184, 200, 0.82)',
+      'rgba(255, 238, 242, 0.9)'
+    ];
+    let hearts = [];
+    let animationFrame;
+
+    function resizeHeartCanvas() {
+      const rect = heartCanvas.getBoundingClientRect();
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+      heartCanvas.width = Math.floor(rect.width * pixelRatio);
+      heartCanvas.height = Math.floor(rect.height * pixelRatio);
+      heartContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    }
+
+    function makeHeart(seedY = Math.random() * heartCanvas.clientHeight) {
+      const size = Math.random() * 1.2 + 1.2;
+      return {
+        x: Math.random() * heartCanvas.clientWidth,
+        y: seedY,
+        size,
+        speed: Math.random() * 0.35 + 0.22,
+        drift: Math.random() * 0.35 - 0.175,
+        phase: Math.random() * Math.PI * 2,
+        sway: Math.random() * 0.45 + 0.15,
+        color: heartColors[Math.floor(Math.random() * heartColors.length)]
+      };
+    }
+
+    function resetHearts() {
+      const count = Math.max(18, Math.floor(heartCanvas.clientWidth / 28));
+      hearts = Array.from({ length: count }, () => makeHeart());
+    }
+
+    function drawPixelHeart(heart) {
+      heartContext.fillStyle = heart.color;
+      heartPixels.forEach(([x, y]) => {
+        heartContext.fillRect(
+          Math.round(heart.x + x * heart.size),
+          Math.round(heart.y + y * heart.size),
+          Math.ceil(heart.size),
+          Math.ceil(heart.size)
+        );
+      });
+    }
+
+    function animateHearts() {
+      heartContext.clearRect(0, 0, heartCanvas.clientWidth, heartCanvas.clientHeight);
+
+      hearts.forEach((heart) => {
+        heart.y += heart.speed;
+        heart.x += heart.drift + Math.sin(heart.y * 0.025 + heart.phase) * heart.sway;
+
+        if (heart.y > heartCanvas.clientHeight + 18) {
+          Object.assign(heart, makeHeart(-18));
+        }
+
+        drawPixelHeart(heart);
+      });
+
+      animationFrame = requestAnimationFrame(animateHearts);
+    }
+
+    resizeHeartCanvas();
+    resetHearts();
+    animateHearts();
+
+    window.addEventListener('resize', () => {
+      cancelAnimationFrame(animationFrame);
+      resizeHeartCanvas();
+      resetHearts();
+      animateHearts();
+    });
+  }
+</script>
 </body>
 </html>
