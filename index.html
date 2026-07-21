@@ -8,6 +8,22 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&display=swap');
 
+    @font-face {
+      font-family: 'Photograph Signature';
+      src: url('assets/fonts/photograph-signature.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Honeymoon';
+      src: url('assets/fonts/honeymoon.otf') format('opentype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
@@ -59,7 +75,7 @@
     }
 
     .hero-eyebrow {
-      font-family: 'Lato', sans-serif;
+      font-family: 'Honeymoon', 'Lato', sans-serif;
       font-weight: 700;
       font-size: 12px;
       letter-spacing: 0.5em;
@@ -82,17 +98,17 @@
     }
 
     .hero-title {
-      font-family: 'Playfair Display', serif;
+      font-family: 'Photograph Signature', 'Playfair Display', cursive;
       font-weight: 400;
-      font-size: 58px;
+      font-size: 82px;
       color: #ffffff;
-      letter-spacing: 0.01em;
-      line-height: 1.05;
+      letter-spacing: 0;
+      line-height: 0.95;
     }
 
     .hero-dates {
       margin-top: 14px;
-      font-family: 'Lato', sans-serif;
+      font-family: 'Honeymoon', 'Lato', sans-serif;
       font-weight: 300;
       font-size: 13px;
       letter-spacing: 0.25em;
@@ -162,8 +178,8 @@
     }
 
     .dest-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 31px;
+      font-family: 'Honeymoon', 'Playfair Display', serif;
+      font-size: 38px;
       font-weight: 400;
       color: #111111;
       margin-bottom: 0;
@@ -173,7 +189,7 @@
     .dest-title .dest-label {
       display: block;
       font-size: 12px;
-      font-family: 'Lato', sans-serif;
+      font-family: 'Honeymoon', 'Lato', sans-serif;
       font-weight: 700;
       letter-spacing: 0.35em;
       text-transform: uppercase;
@@ -299,7 +315,7 @@
     }
 
     .city-pill {
-      font-family: 'Lato', sans-serif;
+      font-family: 'Honeymoon', 'Lato', sans-serif;
       font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.2em;
@@ -382,6 +398,205 @@
       letter-spacing: 0.14em;
     }
 
+    /* ── MEET-CLOSER WIDGET ── */
+    .meet-widget {
+      --meet-progress: 0;
+      --meet-offset: 0%;
+      --trail-start: 0%;
+      padding: 18px 68px 26px;
+      background: #fbfaf6;
+    }
+
+    .meet-inner {
+      position: relative;
+      min-height: 218px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .meet-stage {
+      position: relative;
+      height: 168px;
+    }
+
+    .meet-path {
+      position: absolute;
+      left: 5%;
+      right: 5%;
+      bottom: 42px;
+      height: 4px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #d96b69 0%, #f4c58f 50%, #d9cfc0 100%);
+      -webkit-mask-image: linear-gradient(90deg, transparent 0 var(--trail-start), rgba(0,0,0,0.18) calc(var(--trail-start) + 7%), #000 calc(var(--trail-start) + 16%), #000 95%, transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0 var(--trail-start), rgba(0,0,0,0.18) calc(var(--trail-start) + 7%), #000 calc(var(--trail-start) + 16%), #000 95%, transparent 100%);
+      box-shadow: 0 6px 16px rgba(166,105,88,0.14);
+    }
+
+    .meet-path::before,
+    .meet-path::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #d96b69;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 0 6px rgba(255,255,255,0.8);
+    }
+
+    .meet-path::before {
+      left: 0;
+    }
+
+    .meet-path::after {
+      left: 100%;
+    }
+
+    .meet-marker {
+      position: absolute;
+      top: 50%;
+      width: 12px;
+      height: 12px;
+      border: 3px solid rgba(255,255,255,0.9);
+      border-radius: 50%;
+      background: #eab78e;
+      transform: translate(-50%, -50%);
+    }
+
+    .meet-marker:nth-child(1) { left: 25%; }
+    .meet-marker:nth-child(2) { left: 50%; }
+    .meet-marker:nth-child(3) { left: 75%; }
+
+    .meet-person {
+      position: absolute;
+      bottom: 48px;
+      width: 74px;
+      height: 112px;
+      z-index: 5;
+      transition: left 400ms ease, right 400ms ease;
+    }
+
+    .meet-couple {
+      position: absolute;
+      right: 2%;
+      bottom: 40px;
+      width: 92px;
+      height: 128px;
+      opacity: 0;
+      transform: translateX(14%) scale(0.96);
+      pointer-events: none;
+      transition: opacity 260ms ease, transform 260ms ease;
+      z-index: 6;
+    }
+
+    .meet-couple img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 3px rgba(85,61,47,0.16));
+    }
+
+    .meet-inner.is-met .meet-person {
+      opacity: 0;
+    }
+
+    .meet-inner.is-met .meet-couple {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+
+    .meet-character-art {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .meet-person.left {
+      left: calc(5% + var(--meet-offset));
+      transform: translateX(-35%);
+    }
+
+    .meet-person.right {
+      right: 5%;
+      transform: translateX(35%);
+    }
+
+    .meet-character-art img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 3px rgba(85,61,47,0.16));
+    }
+
+    .meet-frame-blink {
+      opacity: 0;
+    }
+
+    .meet-frame-love {
+      opacity: 0;
+    }
+
+    .meet-frame-sleep {
+      left: 0;
+      top: auto;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      object-fit: contain;
+    }
+
+    .meet-person.is-sleeping {
+      bottom: 38px;
+      width: 150px;
+      height: 118px;
+    }
+
+    .meet-person.is-blinking .meet-frame-blink {
+      opacity: 1;
+    }
+
+    .meet-person.is-blinking .meet-frame-idle {
+      opacity: 0;
+    }
+
+    .meet-person.is-sleeping .meet-frame-idle,
+    .meet-person.is-sleeping .meet-frame-blink,
+    .meet-person.is-sleeping .meet-frame-love {
+      opacity: 0;
+    }
+
+    .meet-person.is-sleeping .meet-frame-sleep {
+      opacity: 1;
+    }
+
+    .meet-person.is-loving .meet-frame-idle,
+    .meet-person.is-loving .meet-frame-blink,
+    .meet-person.is-loving .meet-frame-sleep {
+      opacity: 0;
+    }
+
+    .meet-person.is-loving .meet-frame-love {
+      opacity: 1;
+    }
+
+    .meet-person.is-sleeping.is-loving .meet-frame-love {
+      opacity: 0;
+    }
+
+    .meet-progress-text {
+      text-align: center;
+      font-size: 12px;
+      color: #8d7868;
+      letter-spacing: 0.03em;
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 760px) {
       body {
@@ -401,7 +616,7 @@
       }
 
       .hero-title {
-        font-size: clamp(38px, 12vw, 58px);
+        font-size: clamp(58px, 17vw, 82px);
       }
 
       .hero-eyebrow {
@@ -445,6 +660,29 @@
         font-size: 28px;
       }
 
+      .meet-widget {
+        padding: 18px 24px 24px;
+      }
+
+      .meet-inner {
+        min-height: 200px;
+      }
+
+      .meet-person {
+        width: 64px;
+        height: 98px;
+      }
+
+      .meet-person.is-sleeping {
+        width: 132px;
+        height: 104px;
+      }
+
+      .meet-couple {
+        width: 80px;
+        height: 112px;
+      }
+
       .dest {
         margin-bottom: 46px;
         padding: 24px;
@@ -466,7 +704,7 @@
       }
 
       .dest-title {
-        font-size: 28px;
+        font-size: 34px;
       }
 
       .schedule-row {
@@ -495,7 +733,7 @@
       }
 
       .hero-title {
-        max-width: 9ch;
+        max-width: 10ch;
       }
 
       .hero-cities {
@@ -542,6 +780,42 @@
         font-size: 11px;
       }
 
+      .meet-widget {
+        padding: 14px 20px 22px;
+      }
+
+      .meet-inner {
+        min-height: 178px;
+      }
+
+      .meet-stage {
+        height: 142px;
+      }
+
+      .meet-person {
+        width: 52px;
+        height: 82px;
+      }
+
+      .meet-person.is-sleeping {
+        width: 112px;
+        height: 88px;
+      }
+
+      .meet-couple {
+        width: 66px;
+        height: 92px;
+        right: -2%;
+      }
+
+      .meet-person.left {
+        transform: translateX(-25%);
+      }
+
+      .meet-person.right {
+        transform: translateX(25%);
+      }
+
       .dest {
         margin-bottom: 24px;
         padding: 20px;
@@ -574,7 +848,7 @@
       }
 
       .dest-title {
-        font-size: 26px;
+        font-size: 32px;
         margin-bottom: 14px;
       }
 
@@ -614,7 +888,7 @@
       }
 
       .hero-title {
-        font-size: 34px;
+        font-size: 54px;
       }
 
       .content {
@@ -632,6 +906,29 @@
 
       .countdown-label {
         letter-spacing: 0.12em;
+      }
+
+      .meet-widget {
+        padding-inline: 16px;
+      }
+
+      .meet-inner {
+        min-height: 166px;
+      }
+
+      .meet-person {
+        width: 46px;
+        height: 74px;
+      }
+
+      .meet-person.is-sleeping {
+        width: 96px;
+        height: 76px;
+      }
+
+      .meet-couple {
+        width: 58px;
+        height: 82px;
       }
 
       .dest {
@@ -654,7 +951,7 @@
       }
 
       .dest-title {
-        font-size: 23px;
+        font-size: 29px;
       }
 
       .warm-note {
@@ -698,7 +995,7 @@
         <div class="hero-rule"></div>
         <div class="hero-rule"></div>
       </div>
-      <h1 class="hero-title">America Itinerary</h1>
+      <h1 class="hero-title">Together,with love</h1>
       <p class="hero-dates">August 8 – 28 · 2026</p>
       <div class="hero-cities">
         <span class="city-pill">Salt Lake City</span>
@@ -735,6 +1032,40 @@
           <span class="countdown-label">Seconds</span>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ══ MEET-CLOSER WIDGET ══ -->
+  <section class="meet-widget" aria-label="Countdown progress">
+    <div class="meet-inner" data-meet-widget>
+      <div class="meet-stage">
+        <div class="meet-path" aria-hidden="true">
+          <span class="meet-marker"></span>
+          <span class="meet-marker"></span>
+          <span class="meet-marker"></span>
+        </div>
+
+        <span class="meet-person left" data-character="boy" data-zone="Europe/Berlin" aria-hidden="true">
+          <span class="meet-character-art">
+            <img class="meet-frame-idle" src="assets/images/meet-boy.png" alt="" />
+            <img class="meet-frame-blink" src="assets/images/meet-boy-blink.png" alt="" />
+            <img class="meet-frame-sleep" src="assets/images/sleep-boy.png" alt="" />
+            <img class="meet-frame-love" src="assets/images/love-boy.png" alt="" />
+          </span>
+        </span>
+        <span class="meet-person right" data-character="girl" data-zone="America/Denver" aria-hidden="true">
+          <span class="meet-character-art">
+            <img class="meet-frame-idle" src="assets/images/meet-girl.png" alt="" />
+            <img class="meet-frame-blink" src="assets/images/meet-girl-blink.png" alt="" />
+            <img class="meet-frame-sleep" src="assets/images/sleep-girl.png" alt="" />
+            <img class="meet-frame-love" src="assets/images/love-girl.png" alt="" />
+          </span>
+        </span>
+        <span class="meet-couple" aria-hidden="true">
+          <img src="assets/images/meet-couple.png" alt="" />
+        </span>
+      </div>
+      <p class="meet-progress-text" data-meet-progress-text>0% closer</p>
     </div>
   </section>
 
@@ -962,6 +1293,7 @@
 
 </div><!-- /page -->
 <script>
+  const countdownStart = new Date('2026-07-21T00:00:00+02:00').getTime();
   const countdownTarget = new Date('2026-08-08T14:00:00-06:00').getTime();
   const countdownValues = {
     days: document.querySelector('[data-countdown-value="days"]'),
@@ -969,6 +1301,10 @@
     minutes: document.querySelector('[data-countdown-value="minutes"]'),
     seconds: document.querySelector('[data-countdown-value="seconds"]')
   };
+  const meetWidget = document.querySelector('[data-meet-widget]');
+  const meetProgressText = document.querySelector('[data-meet-progress-text]');
+  const pageParams = new URLSearchParams(window.location.search);
+  const progressOverride = pageParams.get('progress');
 
   function updateCountdown() {
     const remaining = Math.max(0, countdownTarget - Date.now());
@@ -982,6 +1318,22 @@
     countdownValues.hours.textContent = String(hours).padStart(2, '0');
     countdownValues.minutes.textContent = String(minutes).padStart(2, '0');
     countdownValues.seconds.textContent = String(seconds).padStart(2, '0');
+
+    if (meetWidget && meetProgressText) {
+      const tripDuration = countdownTarget - countdownStart;
+      const elapsed = Date.now() - countdownStart;
+      const liveProgress = elapsed / tripDuration;
+      const overrideProgress = Number(progressOverride);
+      const rawProgress = progressOverride === null || Number.isNaN(overrideProgress)
+        ? liveProgress
+        : overrideProgress;
+      const progress = Math.min(1, Math.max(0, rawProgress));
+      meetWidget.style.setProperty('--meet-progress', progress.toFixed(4));
+      meetWidget.style.setProperty('--meet-offset', `${(progress * 70).toFixed(2)}%`);
+      meetWidget.style.setProperty('--trail-start', `${(progress * 70).toFixed(2)}%`);
+      meetWidget.classList.toggle('is-met', progress >= 0.995);
+      meetProgressText.textContent = `${Math.round(progress * 100)}% closer`;
+    }
   }
 
   updateCountdown();
@@ -989,6 +1341,113 @@
 
   const heartCanvas = document.querySelector('.heart-snow');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const meetCharacters = document.querySelectorAll('.meet-person');
+  const boyCharacter = document.querySelector('[data-character="boy"]');
+  const girlCharacter = document.querySelector('[data-character="girl"]');
+
+  function getLocalTime(timeZone) {
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone,
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    }).formatToParts(new Date());
+    const hour = Number(parts.find((part) => part.type === 'hour')?.value || 0);
+    const minute = Number(parts.find((part) => part.type === 'minute')?.value || 0);
+    return {
+      hour: hour === 24 ? 0 : hour,
+      minute
+    };
+  }
+
+  function isCharacterSleeping(character) {
+    const sleepOverride = pageParams.get(`${character.dataset.character}Sleep`);
+
+    if (sleepOverride === '1') return true;
+    if (sleepOverride === '0') return false;
+
+    const { hour, minute } = getLocalTime(character.dataset.zone);
+    const minutes = hour * 60 + minute;
+    const wakeMinutes = character.dataset.character === 'boy' ? 7 * 60 + 30 : 6 * 60;
+    return minutes < wakeMinutes || minutes >= 23 * 60;
+  }
+
+  function updateCharacterSleepStates() {
+    meetCharacters.forEach((character) => {
+      const sleeping = isCharacterSleeping(character);
+      character.classList.toggle('is-sleeping', sleeping);
+
+      if (sleeping) {
+        character.classList.remove('is-blinking');
+        character.classList.remove('is-loving');
+      }
+    });
+  }
+
+  function bothCharactersAwake() {
+    return Array.from(meetCharacters).every((character) => (
+      !character.classList.contains('is-sleeping')
+    ));
+  }
+
+  function setLoveState(active) {
+    meetCharacters.forEach((character) => {
+      character.classList.toggle('is-loving', active);
+
+      if (active) {
+        character.classList.remove('is-blinking');
+      }
+    });
+  }
+
+  if (pageParams.get('love') === '1') {
+    window.setTimeout(() => {
+      if (bothCharactersAwake()) {
+        setLoveState(true);
+      }
+    }, 0);
+  }
+
+  updateCharacterSleepStates();
+  setInterval(updateCharacterSleepStates, 60000);
+
+  if (!reducedMotion.matches) {
+    meetCharacters.forEach((character, index) => {
+      function scheduleBlink() {
+        const delay = 2600 + Math.random() * 3600 + index * 650;
+        window.setTimeout(() => {
+          if (!character.classList.contains('is-sleeping') && !character.classList.contains('is-loving')) {
+            character.classList.add('is-blinking');
+          }
+          window.setTimeout(() => {
+            character.classList.remove('is-blinking');
+            scheduleBlink();
+          }, 140);
+        }, delay);
+      }
+
+      scheduleBlink();
+    });
+
+    function scheduleLove() {
+      const delay = 12000 + Math.random() * 14000;
+      window.setTimeout(() => {
+        if (boyCharacter && girlCharacter && bothCharactersAwake() && !meetWidget?.classList.contains('is-met')) {
+          setLoveState(true);
+
+          window.setTimeout(() => {
+            setLoveState(false);
+            scheduleLove();
+          }, 2600 + Math.random() * 1200);
+        } else {
+          scheduleLove();
+        }
+      }, delay);
+    }
+
+    // Love frames are disabled until final assets are ready.
+    // Use ?love=1 to preview the current placeholder frames.
+  }
 
   if (heartCanvas && !reducedMotion.matches) {
     const heartContext = heartCanvas.getContext('2d');
